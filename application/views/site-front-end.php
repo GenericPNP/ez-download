@@ -16,18 +16,8 @@
 <!--js-->
 <script src="<?php echo $template_path; ?>js/jquery.min.js" type="text/javascript"></script>
 <script src="<?php echo $template_path; ?>js/select2.min.js" type="text/javascript"></script>
-<script>
-<?php if(isset($use_mp3)): ?>
-var use_mp3 = <?=$use_mp3;?>;
-<?php endif; ?>
-var base_path = "<?php echo BASE_PATH;?>";
-</script>
-
-<?php if(isset($use_external_js) && $use_external_js == 1): ?>
-<script src="http://oraksoft.com/demos/YouGrabber-demo/application/views/TemplateFrontEnd/js/script.js"></script>
-<?php else: ?>
+<script>var base_path = "<?php echo BASE_PATH;?>";</script>
 <script src="<?php echo $template_path; ?>js/script.js"></script>
-<?php endif; ?>
 <!--js-->
 </head>
 <body>

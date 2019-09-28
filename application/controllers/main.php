@@ -7,8 +7,6 @@ class Main Extends \core\Controller
 	{
         $data['facebook'] = 'https://www.facebook.com/envato/';
         $data['twitter'] = 'https://twitter.com/envato';
-		$data['use_mp3'] = 1; //1 enabled / 0 disabled
-		$data['use_external_js'] = 1; //1 enabled / 0 disabled
         
 		$this->load->view("site-front-end", $data);
 	}
@@ -25,7 +23,7 @@ class Main Extends \core\Controller
         
         if(isset($info_arr['url_encoded_fmt_stream_map'])) 
         {
-			$formats_arr = explode(',', $info_arr['url_encoded_fmt_stream_map']);
+            $formats_arr = explode(',', $info_arr['url_encoded_fmt_stream_map']);
             $avail_formats = array();
             $i = 0;
             $ipbits = $ip = $itag = $sig = $quality = '';
@@ -68,20 +66,7 @@ class Main Extends \core\Controller
         $url  = base64_decode($_GET['url']);
         $name = urldecode(base64_decode($_GET['title'])). '.' .$ext;
         $size = $this->getSize($url);
-		
-		if($_GET['mp3']==1) {
-			$time_name = time();
-			copy($url, $_SERVER['DOCUMENT_ROOT'].BASE_PATH.'files/'.$time_name.'.mp4');
-			exec("ffmpeg -i ".$_SERVER['DOCUMENT_ROOT'].BASE_PATH."files/".$time_name.".mp4 -b:a 160K -vn ".$_SERVER['DOCUMENT_ROOT'].BASE_PATH."files/".$time_name.".mp3");
-			
-			header('Content-Type: audio/mpeg');
-			header('Content-Disposition: attachment; filename="' .urldecode(base64_decode($_GET['title'])).'.mp3"');
-			header("Content-Transfer-Encoding: binary");
-			readfile($_SERVER['DOCUMENT_ROOT'].BASE_PATH."files/".$time_name.".mp3");
-			unlink($_SERVER['DOCUMENT_ROOT'].BASE_PATH."files/".$time_name.".mp4");
-			unlink($_SERVER['DOCUMENT_ROOT'].BASE_PATH."files/".$time_name.".mp3");
-			exit;
-		}
+
 		header('Content-Type: "' . $mime . '"');
 		header('Content-Disposition: attachment; filename="' . $name . '"');
 		header("Content-Transfer-Encoding: binary");

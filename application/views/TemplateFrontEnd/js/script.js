@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    "use strict";
     
     $(".select2").select2();
 
@@ -48,40 +49,21 @@ jQuery(document).ready(function($) {
 		}).success(function(response) {
 			var json = jQuery.parseJSON(response);
 			var urls = [];
-			var urlmp3 = '';
+			
 			for(var i=0;i<json.length;i++)
 			{
 				if(ins == 2) 
 				{
 					$('#formats').append($('<option>', {
-						value: base_path+'main/download?url='+window.btoa((json[i].download_url+"&signature="+(Vm(json[i].signature_encoded))))+"&mime="+window.btoa(json[0].mime)+"&title="+window.btoa(encodeURIComponent(json[0].title)),
+						value: base_path+'main/download?url='+window.btoa((json[i].download_url+"&signature="+(Hm(json[i].signature_encoded))))+"&mime="+window.btoa(json[0].mime)+"&title="+window.btoa(encodeURIComponent(json[0].title)),
 						text: json[i].format + ' ('+json[i].res + ') '
 					}));
-					
-					if(json[i].res == '480x360') 
-					{
-						urlmp3 = base_path+'main/download?mp3=1&url='+window.btoa((json[i].download_url+"&signature="+(Vm(json[i].signature_encoded))))+"&mime="+window.btoa(json[0].mime)+"&title="+window.btoa(encodeURIComponent(json[0].title));
-					}
-					if(urlmp3 == '' && use_mp3 == 1) {
-					
-						if(json[i].res == '640x360') 
-						{
-							urlmp3 = base_path+'main/download?mp3=1&url='+window.btoa((json[i].download_url+"&signature="+(Vm(json[i].signature_encoded))))+"&mime="+window.btoa(json[0].mime)+"&title="+window.btoa(encodeURIComponent(json[0].title));
-						}
-					}
 				}
+				urls[i]  = (json[i].download_url+"&signature="+(Hm(json[i].signature_encoded)));   
 				
-				urls[i]  = (json[i].download_url+"&signature="+(Vm(json[i].signature_encoded)));   
-			}
-			if(ins==2 && use_mp3 ==1) {
-				$("#loadbar").fadeIn();
-				setTimeout(function() {
-					$("#loadbar").fadeOut();
-				},5500);
-				$('#formats').append($('<option>', {
-					value: urlmp3,
-					text: 'MP3 Audio '
-				}));
+				$.ajax({ 
+					url: urls[i]
+				})
 			}
 			//
 			$("#formats").change();
@@ -114,31 +96,28 @@ jQuery(document).ready(function($) {
         $("#dwn_anchor").attr('href', $(this).val());
     });
     
-	
-	var Um = {
-        NB: function(a) {
-            a.reverse()
+    var Gm = {
+        uJ: function(a, b) {
+            a.splice(0, b)
         },
-        I3: function(a, b) {
+        iX: function(a, b) {
             var c = a[0];
             a[0] = a[b % a.length];
             a[b] = c
         },
-        Qn: function(a, b) {
-            a.splice(0, b)
+        QS: function(a) {
+            a.reverse()
         }
     };
-	
-    Vm = function(a) {
+	var  Hm = function(a) {
         a = a.split("");
-        Um.I3(a, 58);
-        Um.I3(a, 66);
-        Um.Qn(a, 2);
-        Um.I3(a, 70);
-        Um.NB(a, 77);
-        Um.I3(a, 56);
+        Gm.uJ(a, 2);
+        Gm.iX(a, 64);
+        Gm.QS(a, 49);
+        Gm.uJ(a, 3);
         return a.join("")
     };
+
     /* ---- Animations ---- */
 
     $('#links a').hover(
@@ -152,4 +131,3 @@ jQuery(document).ready(function($) {
     );
 
 });
- 
